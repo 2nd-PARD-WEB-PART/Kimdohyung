@@ -1,0 +1,16 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 935px;
+  height: 1080px;
+  background-color: white;
+  align-items: center;
+  margin: 0 auto;
+}
+
+
+.appBarButton {
+  margin-right: 655px; 
+}
+
