@@ -7,17 +7,17 @@ import logoImage from './Icons/Logo.png';
 import menuImage from './Icons/Menu-Button.png';
 import borderImage from './Icons/Border.png';
 import postImage from './Icons/Posts.png';
-import saveImage from './Icons/Save.png';
+import saveImage from './Icons/smallSave.png';
 import taggedImage from './Icons/Tagged.png';
 
-function Mypage(props){
+function Mypage(){
     return(
     <Page> 
         <AppBar>
             <img src ={logoImage} className='appBarButton' />
             <img src ={menuImage} />    
         </AppBar>
-        <Profile name ='kkdh1206' follows= '100' followers = '100' boards ='3'>
+        <Profile>
         </Profile>
         <img src= {borderImage}>
         </img>
@@ -41,10 +41,7 @@ function Mypage(props){
         </ButtonText>
     </Button>
     </Buttons>,
-    <Post 
-    image1= 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpu6vU-z76nkCjeTqAm5UirtDnlsGv8CIm0w&usqp=CAU'
-    image2 ='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpu6vU-z76nkCjeTqAm5UirtDnlsGv8CIm0w&usqp=CAU'
-    image3 = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpu6vU-z76nkCjeTqAm5UirtDnlsGv8CIm0w&usqp=CAU'>
+    <Post>
     </Post>
     </Page>
     );

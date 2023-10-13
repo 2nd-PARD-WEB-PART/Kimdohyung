@@ -1,8 +1,17 @@
 // Profile.js
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import optionImage from './Icons/Options.png';
+import EditProfile from './EditProfile';
+import { useState } from 'react';
+import { ProfileContext } from './App';
+import { UserStateContext } from './App';
+import { NavLink } from 'react-router-dom';
 
+
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  `;
 
 const UserInfo = styled.div`
     display: flex;
@@ -125,46 +134,61 @@ const ProfileButton = styled.button`
 `;
 
 
+
 function Profile(props){
+    
+    const {profile, setProfile} = useContext(ProfileContext);
+    const {userState, setUserState} = useContext(UserStateContext);
+
+    
+  
+
     return(
         <ProfileContainer>
             <ProfileImageContainer>
-                <ProfileImage src = "https://i.ibb.co/LPK9dGH/image.png">
+                <ProfileImage src = {profile.imageUrl}>
                 </ProfileImage>
             </ProfileImageContainer>
             
             <UserInfo>
                 <Headline>
                     <MainText>
-                        {props.name}
+                        {profile.name}
                     </MainText>
-                    <ProfileButton>
-                        <ButtonText>
+
+                    <StyledNavLink 
+            to ={`/myPage/editProfile`}>  
+
+                        <ProfileButton>
+                        <ButtonText >
                             프로필 편집
                         </ButtonText>
                     </ProfileButton>
+            </StyledNavLink>
+
+                    
                     <img src ={optionImage}/>
                 </Headline>
                 <StateButtons>
                     <StateButton>
                         <StateText>
-                            게시물 {props.boards}
+                            게시물 {userState.boards}
                         </StateText>
                     </StateButton>
                     <StateButton>
                         <StateText>
-                            팔로워 {props.followers}
+                            팔로워 {userState.followers}
                         </StateText>
                     </StateButton>
                     <StateButton>
                         <StateText>
-                            팔로우 {props.follows}
+                            팔로우 {userState.follows}
                         </StateText>
                     </StateButton>
                 </StateButtons>
                 <Comment>
                     <CommentText>
-                        안녕하세요
+                        {profile.text}
                     </CommentText>
                 </Comment>
             </UserInfo>
