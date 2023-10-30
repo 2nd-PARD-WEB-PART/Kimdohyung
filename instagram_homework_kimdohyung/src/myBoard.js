@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Profile from './Profile';
 import logoImage from './Icons/Logo.png';
 import menuImage from './Icons/Menu-Button.png';
+import plusImage from './Icons/PlusButton.png';
+import blackHomeImage from './Icons/BlackHome.png';
 import moreImage from './Icons/More.png';
 import { ProfileContext, UserStateContext } from './App';
 import { useParams } from 'react-router-dom';
@@ -13,6 +15,8 @@ import chatImage from './Icons/Comment.png';
 import sendImage from './Icons/SharePosts.png';
 import saveImage from './Icons/Save.png';
 import smallHeartImage from './Icons/interface-favorite-heart.png';
+import { Link } from 'react-router-dom';
+import MediaQuery from'react-responsive';
 
 
 function MyBoard(){
@@ -36,6 +40,9 @@ function MyBoard(){
     setImageIndex((imageIndex + 1) % 2);
     };
 
+    
+       
+
     const heartClick = ()=>{ // 하트 누를때 동작하는 함수
         if(imageIndex==0){
             increment(); // 좋아요 증가
@@ -45,6 +52,7 @@ function MyBoard(){
         }
         changeImage();
     }
+    
 
     const [text, setText] = useState('');
 
@@ -54,20 +62,111 @@ function MyBoard(){
 
     // 댓글 리스트 여러개 넣어줄려고 정의함
     const [commentList, setCommentList] = useState([]);
-    let commentText =commentList.map((value, key) => <TextTab key = {key}><NormalText >{profile.name}    {value}</NormalText> </TextTab>);
+    const [commentImages, setCommentImages] = useState([]); // 각 댓글에 대한 이미지 인덱스
+
+    // 위에 setCommentImages 는 배열로 잡아서 각각 setSmallImageIndex가 있는것이랑 동일
+    // const [imageSmallIndex, setSmallImageIndex] = useState(0); ->  이건 하나만 되는것
+    
+    const smallImages = [  // 이미지 바꿔주는 용도
+        smallHeartImage,
+        redHeartImage 
+    ];
+    const changeSmallImage = (index) => {
+       const updatedImages = [...commentImages]; // updatedImage 정의
+       updatedImages[index] = (updatedImages[index]+1)%2; // index 에 해당한 놈 분류해서 index 놈만 바꿈
+       setCommentImages(updatedImages); // 바꾼걸 반영
+       };
+
+
+
+    let commentText =commentList.map((value, key) => <TextTab key = {key}><div><NormalText >{profile.name}    {value}    </NormalText></div> <SmallImageIcon src={smallImages[commentImages[key]]} onClick={()=>changeSmallImage(key)}/></TextTab> );
     const postText = () => {
         // commentList.push(text); --> 그냥 push로 해주면 여기서는 인식을 못한다고 한다.
         setCommentList([...commentList, text]); // ... commentList 하면 모든 commentList의 요소 복사해서 가져옴
+        setCommentImages([...commentImages, 0]); // 기존 댓글의 하트들과 새로운 댓글에 대한 이미지 인덱스를 0으로 초기화해서 추가
         setText('');
     };
 
 
     return(
         <Page>
+            <MediaQuery minWidth={750}>
+            <Page>
             <AppBarContainerShadow>
                 <AppBarContainer>
                     <AppBar>
+                    <Link to ="/myPage">
                     <img src ={logoImage} />
+                    </Link>
+                    <Search>
+                        <SearchLetter>
+                            검색
+                        </SearchLetter>
+                    </Search>
+                    <img src ={menuImage} />  
+                    </AppBar>
+                </AppBarContainer>
+            </AppBarContainerShadow>
+            <Screen>
+            <Listview>
+                <Board>
+                <BoardBar>
+                    <ProfileImageDiv>
+                        <ProfileImage src={profile.imageUrl}/>
+                    </ProfileImageDiv>
+                    <Name>{profile.name}</Name>
+                    <More src={moreImage}></More>
+                </BoardBar>
+                    <BoardImage src={userState.images[id-1]}/>
+                <BoardTabContainer>
+                    <BoardTab>
+                        <IconBox>
+                            <Icon src={images[imageIndex]} onClick={heartClick} />
+                                 {/* 바로 onClick 에 setLike(like+1)를 쓰면 selike가 비동기적으로 작동가능해서 안된다고함 */}
+                            {/* setLike 함수로 like 조절하고 색도 바꾸기 */}
+                            {/* 그리고 색 바뀐놈은 또 like 빼고 색도 흰색으로 반복 */}
+                            <Icon src={chatImage}/>
+                            <Icon src={sendImage}/>
+                        </IconBox>
+                    </BoardTab>
+                    <IconBox>
+                        <Icon  src={saveImage}/>
+                    </IconBox>
+                </BoardTabContainer>
+                <TextTab>
+                    <NormalText>
+                        좋아요 {like}개
+                    </NormalText>
+                </TextTab>
+                
+                {commentText}
+
+                <CommentTab>
+                    <Emoji>
+                        <Icon src= {emojiImage}/>
+                    </Emoji>
+                    <CommentInput value={text} onChange={handleInputChange} type='text' placeholder='댓글 달기...'/>
+                    <PostButton onClick={postText}>
+                        게시
+                    </PostButton>
+                </CommentTab>
+                </Board>
+            </Listview>
+            
+            </Screen>
+        </Page>
+            </MediaQuery>
+
+
+
+            <MediaQuery minWidth={450} maxWidth={750}>
+            <Page>
+            <AppBarContainerShadow>
+                <AppBarContainer>
+                    <AppBar>
+                    <Link to ="/myPage">
+                    <img src ={logoImage} />
+                    </Link>
                     <Search>
                         <SearchLetter>
                             검색
@@ -132,13 +231,102 @@ function MyBoard(){
             </Tab>
             </Screen>
         </Page>
+            </MediaQuery>
+
+
+            <MediaQuery maxWidth={450}>
+            <Page>
+            <AppBarContainerShadow>
+                <AppBarContainer>
+                    <AppBar>
+                    <Link to ="/myPage">
+                    <img src ={logoImage} />
+                    </Link>
+                    <Search>
+                        <SearchLetter>
+                            검색
+                        </SearchLetter>
+                    </Search>
+                    <img src ={menuImage} />  
+                    </AppBar>
+                </AppBarContainer>
+            </AppBarContainerShadow>
+            <Screen>
+            <Listview>
+                <Board>
+                <BoardBar>
+                    <ProfileImageDiv>
+                        <ProfileImage src={profile.imageUrl}/>
+                    </ProfileImageDiv>
+                    <Name>{profile.name}</Name>
+                    <More src={moreImage}></More>
+                </BoardBar>
+                    <BoardImage src={userState.images[id-1]}/>
+                <BoardTabContainer>
+                    <BoardTab>
+                        <IconBox>
+                            <Icon src={images[imageIndex]} onClick={heartClick} />
+                                 {/* 바로 onClick 에 setLike(like+1)를 쓰면 selike가 비동기적으로 작동가능해서 안된다고함 */}
+                            {/* setLike 함수로 like 조절하고 색도 바꾸기 */}
+                            {/* 그리고 색 바뀐놈은 또 like 빼고 색도 흰색으로 반복 */}
+                            <Icon src={chatImage}/>
+                            <Icon src={sendImage}/>
+                        </IconBox>
+                    </BoardTab>
+                    <IconBox>
+                        <Icon  src={saveImage}/>
+                    </IconBox>
+                </BoardTabContainer>
+                <TextTab>
+                    <NormalText>
+                        좋아요 {like}개
+                    </NormalText>
+                </TextTab>
+                
+                {commentText}
+
+                <CommentTab>
+                    <Emoji>
+                        <Icon src= {emojiImage}/>
+                    </Emoji>
+                    <CommentInput value={text} onChange={handleInputChange} type='text' placeholder='댓글 달기...'/>
+                    <PostButton onClick={postText}>
+                        게시
+                    </PostButton>
+                </CommentTab>
+                </Board>
+            </Listview>
+            
+            </Screen>
+            
+            <NavigatorContainerShadow>
+                <AppBarContainer>
+                   <NavigatorBar>
+                    <Icon src={blackHomeImage}/>
+                    <Icon src={plusImage}/>
+                    <Icon src={profile.imageUrl}/>
+                   </NavigatorBar>
+                </AppBarContainer>
+            </NavigatorContainerShadow>
+        </Page>
+            </MediaQuery>
+
+
+        </Page>
+        
+        
     );
 }
 
 
 export default MyBoard;
 
-
+const SmallImageIcon = styled.img`
+width: 13px;
+height: 13px;
+flex-shrink: 0;
+margin-right: 30px;
+`;
 
 const CommentTab = styled.div`
 height: 40px;
@@ -194,13 +382,14 @@ height: 30px;
 const TextTab = styled.div`
 display: flex;
 flex-direction: row;
-justify-content: start;
-align-items: start;
+justify-content: space-between;
+align-items: center;
 padding-bottom: 20px;
 background-color: white;
 padding-left: 15px;
 width: 600px;
 height: 27px;
+
 `;
 const NormalText = styled.p`
 white-space: pre;
@@ -377,10 +566,10 @@ const Page = styled.div`
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    width: 1920px;
-height: 1080px;
+    width: 100%;
+height: 100%;
 background-color: #FAFAFA ;
-`
+`;
 
 const Board = styled.div`
 display: flex;
@@ -422,6 +611,16 @@ const AppBar = styled.div`
     padding: 10px 16px;
   ;`
 
+const NavigatorBar = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    width: 100%;
+    gap: 200px;
+  ;`
+
 const Listview = styled.div`
 display: flex;
 flex-direction: column;
@@ -436,20 +635,32 @@ background: var(--Dark-white, #FAFAFA);
 
 const AppBarContainerShadow = styled.div`
 display: flex;
-width: 1920px;
+width: 100%;
 height: 53px;
-padding: 0px 492px 0px 493px;
+padding: 0px 0px 0px 0px;
 flex-direction: column;
 justify-content: start;
 align-items: center;
 flex-shrink: 0;
 background: var(--Dark-white, #FAFAFA);
 ;`
+const NavigatorContainerShadow = styled.div`
+display: flex;
+width: 100%;
+height: 53px;
+padding: 0px 0px 0px 0px;
+flex-direction: column;
+justify-content: end;
+align-items: center;
+flex-shrink: 0;
+background: var(--Dark-white, #FAFAFA);
+;`
+
 const AppBarContainer = styled.div`
 display: flex;
-width: 1920px;
+width: 100%;
 height: 50px;
-padding: 0px 492px 0px 493px;
+padding: 0px 0px 0px 0px;
 justify-content: center;
 align-items: center;
 flex-shrink: 0;

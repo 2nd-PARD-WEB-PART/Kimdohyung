@@ -36,9 +36,11 @@ function App() {
       <ProfileContext.Provider value ={{ profile, setProfile}}>
       <UserStateContext.Provider value ={{ userState, setUserState}}>
       <Routes>
+        <Route path='/' element = {<Mypage />}/>
         <Route path='/myPage' element = {<Mypage />}/>
         <Route path='/myPage/editProfile' element = {<EditProfile />}/>
-        <Route path='/myPage/myBoard/:id' element = {<MyBoard />}/>
+        <Route path='/myPage/myBoard/:id' element = {<MyBoard />}/> 
+        {/* 여기 :id 있는거에서 useParams로 id 가져옴 */}
       </Routes>
       </UserStateContext.Provider>
       </ProfileContext.Provider>

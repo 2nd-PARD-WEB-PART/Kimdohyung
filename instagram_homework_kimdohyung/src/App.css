@@ -14,3 +14,7 @@
   margin-right: 655px; 
 }
 
+#root {
+  background-color: #FAFAFA; /* 전체 배경색 관장하는놈 */
+}
+
