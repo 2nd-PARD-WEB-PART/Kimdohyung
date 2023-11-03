@@ -152,13 +152,17 @@ function MyBoard(){
                 </CommentTab>
                 </Board>
             </Listview>
-            
+            <Tab>
+                <ProfilesContainer>
+                    <ProfileContainer>
+                        <TabProfileImage src={profile.imageUrl}/>
+                        <TabProfileName>{profile.name}</TabProfileName>
+                    </ProfileContainer>
+                </ProfilesContainer>
+            </Tab>
             </Screen>
         </Page>
             </MediaQuery>
-
-
-
             <MediaQuery minWidth={450} maxWidth={750}>
             <Page>
             <AppBarContainerShadow>
@@ -221,14 +225,7 @@ function MyBoard(){
                 </CommentTab>
                 </Board>
             </Listview>
-            <Tab>
-                <ProfilesContainer>
-                    <ProfileContainer>
-                        <TabProfileImage src={profile.imageUrl}/>
-                        <TabProfileName>{profile.name}</TabProfileName>
-                    </ProfileContainer>
-                </ProfilesContainer>
-            </Tab>
+            
             </Screen>
         </Page>
             </MediaQuery>
